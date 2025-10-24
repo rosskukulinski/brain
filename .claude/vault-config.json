@@ -1,0 +1,72 @@
+{
+  "user": {
+    "name": "Ross Kukulinski",
+    "background": {
+      "companies": ["Kong Inc.", "Variance", "Percolate"],
+      "roles": ["Product Leader", "Entrepreneur", "Mentor"],
+      "expertise": [
+        "Product management and strategy",
+        "Kubernetes and container orchestration",
+        "DevOps and cloud infrastructure",
+        "Open source software",
+        "SaaS and enterprise software",
+        "Community building and technical evangelism"
+      ],
+      "interests": [
+        "Product management",
+        "Infrastructure and DevOps",
+        "Writing and blogging",
+        "Startup ecosystem"
+      ],
+      "notableWork": [
+        "O'Reilly course: Introduction to CoreOS",
+        "Patent: Transportation demand prediction",
+        "Node.js Foundation Evangelism Working Group member",
+        "Technical writing on Kubernetes best practices"
+      ]
+    },
+    "location": "Kirkland, WA (Greater Seattle Area)",
+    "website": "kukulinski.com",
+    "linkedin": "https://www.linkedin.com/in/kukulinski/",
+    "publicProfile": true
+  },
+  "vaultPath": null,
+  "organizationMethod": "PARA",
+  "primaryUses": [
+    "personal knowledge base",
+    "meeting notes",
+    "blog writing",
+    "research",
+    "family projects"
+  ],
+  "writingStyle": "Technical and precise",
+  "interactionMode": "both",
+  "weeklyReview": "Sunday evening planning session",
+  "tools": {
+    "geminiVision": true,
+    "firecrawl": true,
+    "git": true
+  },
+  "projects": [
+    "TailScale"
+  ],
+  "areas": [
+    "Health & Fitness",
+    "Family",
+    "Career Development",
+    "Finances",
+    "Home Maintenance",
+    "Team Management",
+    "Hannah",
+    "Elliott",
+    "Noah",
+    "Nicole",
+    "Parents"
+  ],
+  "resources": [],
+  "frequentWebsites": [
+    "Reddit"
+  ],
+  "importedAt": "2025-10-24",
+  "lastUpdated": "2025-10-24"
+}
