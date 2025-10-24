@@ -478,6 +478,269 @@ If teams have feature flags, they can:
 
 ---
 
+## KPIs & Metrics for Bridge Strategy
+
+**Proposed North Star Metric:** Number of concurrent connected devices across all tailnets
+
+**Proposed Secondary Metric:** Number of tailnets (rough proxy for customers)
+
+### Analysis: Are These the Right Metrics?
+
+**Strengths of "Concurrent Connected Devices":**
+- Maps directly to coordination service COGS (the actual infrastructure cost driver)
+- Indicates actual product usage (not just signups)
+- Grows with both enterprise (more employees) and platform (more workloads)
+- Network effects: More devices = more value = more connections
+
+**Weaknesses of "Concurrent Connected Devices":**
+- Doesn't distinguish between paying and free users
+- Doesn't tell you if usage is VPN (low value) or platform (high value)
+- Can be gamed (spin up thousands of ephemeral nodes)
+- Doesn't directly correlate to revenue (one customer with 10K devices vs 10K customers with 1 device)
+
+**Strengths of "Number of Tailnets":**
+- Clear proxy for customers
+- Easy to segment (free, paid, enterprise)
+- Maps to support COGS (largest cost driver = onboarding per customer)
+
+**Weaknesses of "Number of Tailnets":**
+- Doesn't capture expansion revenue (customer goes from 10 → 1000 devices)
+- Doesn't distinguish between active and dormant tailnets
+- Platform use cases might use single tailnet with many workloads
+- Multiple tailnets feature complicates this (one customer = many tailnets)
+
+---
+
+### Recommended: Multi-Tier Metrics Framework
+
+**Bridge Strategy Insight:** We need metrics that validate the "bridge thesis"—that Services, Identity, and Workload Connectivity serve BOTH markets.
+
+#### Tier 1: North Star Metric (Single Number)
+
+**Proposed: Active Device-Hours per Week**
+- **Definition:** Sum of (concurrent connected devices × hours connected) across all tailnets
+- **Why better than concurrent devices:** Captures usage intensity, not just peak
+- **Maps to value:** More device-hours = more infrastructure managed = more value created
+- **Maps to costs:** Coordination service scales with active devices, not total signups
+
+**Alternative: Weekly Active Devices (WAD)**
+- Similar to MAU but shorter cycle (infrastructure products used daily/weekly)
+- Easier to reason about than device-hours
+- Industry standard (easier to benchmark)
+
+#### Tier 2: Bridge Strategy Validation Metrics
+
+These metrics specifically test whether the bridge features are working:
+
+**1. Hybrid Customer Percentage**
+- **Definition:** % of paying customers using BOTH VPN features AND platform features
+- **Platform signal:** Using Services, workload identity, or ephemeral tailnets
+- **VPN signal:** >10 human users, using ACLs, using exit nodes or app connectors
+- **Why it matters:** This IS the bridge thesis—same customers using both
+- **Target:** 40%+ by end of H1 FY27
+
+**2. Services Adoption Rate**
+- **Definition:** % of tailnets with at least one Service advertised
+- **Why it matters:** Services is the strategic center of gravity for bridge
+- **Segments to track:**
+  - Free tailnets (hobbyists experimenting)
+  - Paid <100 devices (SMB/startups)
+  - Paid >100 devices (enterprise)
+- **Target:** 25% of paid tailnets by end of H1 FY27
+
+**3. Workload Identity Usage**
+- **Definition:** Number of workload identities created per week (CI/CD, K8s, cloud)
+- **Why it matters:** This is the "infra access + platform" bridge
+- **Segment:** Workload devices as % of total devices
+- **Target:** 15%+ of all devices are workloads (not humans) by H2 FY27
+
+#### Tier 3: Growth & Revenue Metrics
+
+**Leading Indicators (predict future revenue):**
+
+1. **New Tailnet Creation Rate**
+   - Weekly new signups
+   - Segment: From personal (PLG) vs from work email (PLS signal)
+
+2. **Activation Rate**
+   - % of new tailnets that connect >3 devices in first week
+   - Maps to support COGS (activated users = more onboarding support)
+
+3. **"Bring to Work" Conversion**
+   - Track users who start personal, then create work tailnet
+   - Track free personal → paid company (via email domain clustering)
+   - This validates PLG → PLS motion
+
+4. **Platform API Call Volume**
+   - Total API calls per week (programmatic usage signal)
+   - Services API calls specifically
+   - Track growth rate (should be 10%+ MoM if platform is working)
+
+**Lagging Indicators (revenue outcomes):**
+
+5. **ARR (Annual Recurring Revenue)**
+   - Standard SaaS metric
+   - Segment by: Free, Starter, Enterprise
+
+6. **Net Revenue Retention (NRR)**
+   - Cohort-based expansion revenue
+   - **Critical for bridge thesis:** Are VPN customers expanding to platform (adding devices/workloads)?
+   - Target: 120%+ (best-in-class SaaS)
+
+7. **Average Revenue Per Customer (ARPC)**
+   - Better than ACV for device-based pricing
+   - Tracks expansion within accounts
+
+#### Tier 4: Efficiency & Health Metrics
+
+**COGS-Related (based on our economics analysis):**
+
+8. **Support Tickets per New Tailnet**
+   - Largest COGS driver = support during onboarding
+   - Should DECLINE over time as UX improves
+   - Target: <2 tickets per new tailnet by H1 FY27
+
+9. **DERP Relay Usage Rate**
+   - % of connections requiring DERP fallback
+   - Should be <10% (peer-to-peer is cost advantage)
+   - Spike = infrastructure problem or product issue
+
+10. **Time to First Value (TTFV)**
+    - How long from signup to first device connection?
+    - Free tier: Target <5 minutes
+    - Enterprise: Target <24 hours (incl. SSO setup)
+
+**Product Quality (SRPF Framework):**
+
+11. **Reliability - Control Plane Uptime**
+    - Target: 99.9%+ (aligns with SRPF: Reliability > Features)
+    - Segment: Coordination service vs DERP availability
+
+12. **Security - Mean Time to Patch (MTTP)**
+    - How quickly do critical security issues get fixed?
+    - Target: <24 hours for critical, <7 days for high
+
+13. **Performance - p95 Connection Establishment Time**
+    - How fast can two devices connect?
+    - Direct connection vs DERP fallback
+    - Target: <2 seconds p95
+
+#### Tier 5: Market Position Metrics
+
+14. **Developer Mindshare**
+    - GitHub stars growth rate
+    - Reddit/HN mentions (sentiment analysis)
+    - Stack Overflow questions/answers
+    - "Tailscale" search volume trends
+
+15. **Competitive Win Rate**
+    - % of deals won vs Twingate, Zscaler, Cisco, etc.
+    - Track by segment (enterprise vs SMB)
+    - Track by use case (VPN vs infra access)
+
+---
+
+### How to Validate "Bridge" Thesis with Data
+
+**The Key Question:** Do bridge features actually serve both markets?
+
+**Hypothesis Testing (Q1 FY27):**
+
+**Test 1: Do enterprise VPN customers adopt platform features?**
+- Cohort: Customers who signed up for "Business VPN"
+- Measure: % that create Services, use workload identity, or create multiple tailnets within 6 months
+- Success: >30% adopt at least one platform feature
+- Failure: <15% adopt platform features → VPN and platform are separate markets
+
+**Test 2: Do platform users expand to org-wide VPN?**
+- Cohort: Customers who started with Services/workload identity
+- Measure: % that expand to >50 human users (VPN use case)
+- Success: >20% expand to VPN use case
+- Failure: <10% expand → Platform customers don't need VPN
+
+**Test 3: Does hybrid usage drive higher revenue?**
+- Segment customers into: VPN-only, Platform-only, Hybrid (both)
+- Measure: ARPC for each segment
+- Success: Hybrid ARPC is 2x+ higher than either segment alone
+- Failure: No revenue difference → Bridge doesn't create more value
+
+**Test 4: Do bridge features reduce churn?**
+- Cohort: Customers who use bridge features vs those who don't
+- Measure: Retention rate at 6, 12, 24 months
+- Success: Hybrid customers have <5% churn (vs 15-20% for single-use)
+- Failure: No retention difference → Bridge doesn't create lock-in
+
+---
+
+### Connection to COGS Economics
+
+**Recall from COGS analysis:**
+- Support (50-60%): Scales with NEW customers, not usage
+- Coordination service (20-30%): Scales with active devices
+- DERP bandwidth (10-20%): Minimized by peer-to-peer
+
+**Metrics that Optimize Unit Economics:**
+
+1. **Support Tickets per New Tailnet** → Directly reduces largest COGS
+2. **Activation Rate** → Better UX = fewer support tickets
+3. **DERP Usage Rate** → Keep bandwidth costs negligible
+4. **Device-Hours per Customer** → Revenue grows faster than costs (sub-linear infrastructure scaling)
+
+**The Virtuous Cycle:**
+- Better product (lower TTFV, higher activation) → Fewer support tickets → Lower COGS
+- More usage (device-hours) → More value → Higher willingness to pay
+- Network effects (more devices) → Better peer-to-peer connectivity → Lower DERP costs
+- Platform adoption → Workload devices (high margin, no support burden)
+
+---
+
+### Open Questions for Interview
+
+**1. Current Metrics:**
+- "What metrics do you track today as north star?"
+- "How do you measure success for Services vs VPN features?"
+- "Do you segment customers by usage patterns (VPN-only vs platform-only)?"
+
+**2. Bridge Strategy Validation:**
+- "What would prove or disprove the bridge thesis?"
+- "Are you tracking hybrid customers (using both VPN and platform)?"
+- "What's the current overlap? Is it growing?"
+
+**3. Data Infrastructure:**
+- "Do you have the instrumentation to track platform API usage?"
+- "Can you identify when a VPN customer starts using platform features?"
+- "How quickly can you answer 'which features drive retention'?"
+
+**4. Team Alignment:**
+- "Do different teams optimize for different metrics? (VPN team vs Platform team)"
+- "How do you avoid local optimization that hurts global strategy?"
+- "If we adopt the bridge strategy, what would be the shared metric across teams?"
+
+---
+
+### Final Thought: Metrics Drive Behavior
+
+**Critical Principle:** The metrics you choose shape team incentives and behavior.
+
+**Bad Outcome:**
+- VPN team optimizes for "number of users"
+- Platform team optimizes for "API calls"
+- No one owns "hybrid customers"
+- Strategy fails despite hitting both metrics
+
+**Good Outcome:**
+- Shared metric: "Hybrid Customer Revenue"
+- VPN team asks: "How do we convert VPN users to platform?"
+- Platform team asks: "How do we expand platform users to VPN?"
+- Everyone aligned on bridge strategy
+
+**Therefore:**
+- North Star should be shared (Active Device-Hours across all use cases)
+- Bridge metrics should be highly visible (Hybrid Customer % in every exec review)
+- Team metrics should ladder up to bridge success (not create conflicting incentives)
+
+---
+
 ## Questions to Explore
 
 ### Strategy & Prioritization
