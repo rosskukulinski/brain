@@ -195,6 +195,214 @@ At Kong, we had similar scaling challenges around ~8-10 teams. What worked:
 
 ---
 
+## Feature Flagging & Progressive Rollout
+
+**Open Question:** Is Tailscale using feature flagging (e.g., LaunchDarkly, Flagsmith, or homegrown) to progressively roll out capabilities?
+
+**Why This Matters:**
+
+Looking at the Q4 roadmap, there are multiple items at different stages (Alpha, Beta, GA, POC). Feature flags could be a powerful enabler for:
+
+### 1. Incremental Release to Various Audiences
+
+**Current Challenge (from roadmap):**
+- 6 items in Alpha (10%)
+- 8 items in Beta (14%)
+- 9 items in GA (16%)
+
+**With Feature Flags:**
+- **Free tier users:** Test new features first (opt-in alpha/beta)
+- **Paid tiers:** Gradual rollout (10% → 50% → 100%)
+- **Enterprise customers:** Controlled rollout with kill switches
+- **Specific tailnets:** Early access program / design partners
+- **Geographic regions:** Test in smaller markets first
+- **Client versions:** Only enable for clients ≥ version X
+
+**Example:**
+```
+// Workload Identity (P0, committed to GA in Q4)
+if (featureFlag.enabled('workload-identity', {
+  tailnetId,
+  plan: 'enterprise',
+  clientVersion: '>= 1.54'
+})) {
+  // Enable workload identity features
+}
+```
+
+### 2. Unblock Engineering Experimentation While Respecting SRPF
+
+**The SRPF Alignment:**
+
+**Security:**
+- Feature flags as kill switches for security issues
+- Rollback vulnerable features instantly (no deploy required)
+- Test security features with internal tailnets first
+- Gradual exposure reduces attack surface during rollout
+
+**Reliability:**
+- Reduce blast radius of new features (start with 1% of users)
+- Monitor error rates, rollback if reliability degrades
+- Canary deployments become trivial
+- "Escape hatch" for problematic releases
+
+**Performance:**
+- A/B test performance impact before full rollout
+- Enable expensive features only for users who need them
+- Gradual load increase on infrastructure
+- Measure performance regression per cohort
+
+**Features:**
+- Experiment freely without affecting stable users
+- Multiple variants in production simultaneously
+- Rapid iteration on feature UX
+- Data-driven decisions on feature adoption
+
+**Engineering Experimentation Examples:**
+
+1. **Peer Relay (P0, committed to GA):**
+   - Flag: Roll out to 10% of tailnets with high NAT traversal failure rates
+   - Monitor: DERP usage reduction, connection success rate
+   - Expand: If metrics improve, increase to 50% → 100%
+   - Kill switch: If connection failures spike, disable immediately
+
+2. **Rust Client (P0, in development):**
+   - Flag: Enable for internal employees first
+   - Then: Opt-in beta program (enthusiasts who report bugs)
+   - Then: Specific OSes where resource usage is critical
+   - Kill switch: Fallback to Go client if issues arise
+
+3. **Services Pricing (P2, not committed):**
+   - Flag: Test different pricing models with different cohorts
+   - A/B test: Usage-based vs seat-based pricing
+   - Measure: Conversion rates, revenue per customer
+   - Optimize: Choose winning variant based on data
+
+### 3. Benefits for Runtime Duality Problem
+
+**Recall the constraint:** Clients deploy slowly (MTBF focus), Cloud deploys fast (MTTF focus)
+
+**Feature Flags Bridge This Gap:**
+
+**Client-Side Flags:**
+- Client ships with feature code but disabled
+- Server-side flag controls enablement
+- No need to wait for client upgrades to ship features
+- Rollback = server-side config change (instant)
+
+**Example Flow:**
+```
+1. Deploy v1.60 client with "Services support" code (disabled by default)
+2. Wait for 80% of clients to upgrade (2-3 months)
+3. Server-side flag enables Services for client v1.60+
+4. If issues arise, disable flag instantly (no client rollback needed)
+```
+
+**This Enables:**
+- Faster feature velocity (no waiting for client adoption)
+- Safer experimentation (kill switch always available)
+- Better backward compatibility (old clients ignore unknown flags)
+- Reduced coordination between client and server teams
+
+### 4. Alignment with Current Roadmap Stages
+
+Looking at their stage definitions, feature flags could smooth these transitions:
+
+**POC (3 items):**
+- Internal-only feature flags
+- Engineering tests without affecting customers
+
+**Alpha (6 items):**
+- Feature flag: `opt_in: true`
+- Only users who explicitly enable see it
+- Example: "Device posture error messages on client" (P2)
+
+**Beta (8 items):**
+- Feature flag: `rollout_percentage: 25`
+- Gradual rollout to subset of users
+- Example: "Windowed client for Windows" (P1)
+
+**GA (9 items):**
+- Feature flag: `rollout_percentage: 100, kill_switch: available`
+- All users, but can disable if issues arise
+- Example: "Peer relay" (P0)
+
+### 5. Reduces Planning Overhead
+
+**Connection to R&D Planning Discussion:**
+
+If teams have feature flags, they can:
+- Ship code to production without coordinating release timing
+- Reduce cross-team dependencies (each team controls their flags)
+- Experiment without executive approval for every iteration
+- Validate hypotheses quickly (enable for 5% of users, measure)
+
+**This Supports "Teams as APIs" Model:**
+- Team A ships feature behind flag (100% disabled)
+- Team B integrates when ready (enables flag for their use cases)
+- No synchronous coordination required
+- Each team controls their own rollout pace
+
+### Questions for Interview:
+
+1. **Current State:**
+   - "Do you currently use feature flagging? Which tool/approach?"
+   - "How do you manage progressive rollouts for features in Alpha/Beta/GA?"
+   - "What's the process for rolling back a feature that causes issues?"
+
+2. **SRPF Alignment:**
+   - "How do feature flags fit into the Security > Reliability > Performance > Features framework?"
+   - "When a feature threatens reliability, how quickly can you disable it?"
+   - "Have you had incidents where a kill switch would have helped?"
+
+3. **Engineering Velocity:**
+   - "Do client teams wait for full client adoption before enabling features?"
+   - "How do you handle the client/server deployment mismatch?"
+   - "Could feature flags help engineering experiment more freely while respecting SRPF?"
+
+4. **Organizational Impact:**
+   - "If teams had more control over feature rollout via flags, could we reduce planning coordination?"
+   - "Would feature flags enable smaller batch sizes and faster iteration?"
+   - "How would this affect the Problem doc → 1-pager → Project doc process?"
+
+### Potential Concerns & Tradeoffs:
+
+**Complexity:**
+- Feature flag sprawl (hundreds of flags, hard to manage)
+- Technical debt (old flags never cleaned up)
+- Code complexity (if/else branches everywhere)
+
+**Mitigation:**
+- Flag lifecycle management (auto-expire flags after 90 days)
+- Regular cleanup sprints (remove flags after full rollout)
+- Wrapper abstractions (hide flag complexity from core logic)
+
+**Cost:**
+- LaunchDarkly/Split: $1K-$10K/month depending on scale
+- Homegrown: Engineering time to build/maintain
+
+**Tradeoff Analysis:**
+- Cost: $5K/month for LaunchDarkly Enterprise
+- Benefit: Faster iteration, reduced blast radius, engineering velocity
+- ROI: If saves 1 week of engineering time per quarter = $50K+ value
+- **Verdict: Likely worth it at Tailscale's scale**
+
+### Recommendation:
+
+**If not already using feature flags:**
+- Start small: Implement for 1-2 high-risk P0 items (Peer Relay, Workload Identity)
+- Tooling: LaunchDarkly or Flagsmith (proven, enterprise-ready)
+- Rollout strategy: Internal first, then beta opt-in, then gradual GA
+- Establish flag lifecycle: Auto-expire, cleanup process
+
+**If already using feature flags:**
+- Expand usage to enable more engineering experimentation
+- Use flags to reduce planning coordination overhead
+- Leverage for A/B testing on pricing and product decisions
+- Consider as enabler for "teams as APIs" organizational model
+
+---
+
 ## Questions to Explore
 
 ### Strategy & Prioritization
