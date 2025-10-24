@@ -743,6 +743,52 @@ These metrics specifically test whether the bridge features are working:
 
 ## VPN Customers vs Platform Users: Key Distinctions
 
+### Executive Summary
+
+**The Simple Answer:**
+
+**VPN Customers:** **Human-to-resource** connectivity
+- Alice's laptop → company database
+- Bob's phone → internal admin panel
+- IT team → Kubernetes cluster
+
+**Platform Users:** **Resource-to-resource** connectivity
+- CI pipeline → staging environment
+- Microservice A → Microservice B
+- IoT sensor → data ingestion service
+
+**Why It Matters for Bridge Strategy:**
+
+Most real customers need BOTH.
+
+**Example - SaaS Company:**
+- **VPN usage:** Engineers access production databases, K8s dashboards (humans → resources)
+- **Platform usage:** CI/CD authenticates via workload identity, microservices communicate via Services (resources → resources)
+- **Same customer, same infrastructure, different connectivity patterns**
+
+**Revenue Implications:**
+- **VPN-Only:** NRR 100-110% (grows with hiring)
+- **Platform-Only:** NRR 110-130% (grows with service count)
+- **Hybrid (Bridge!):** NRR 130-150%+ (multi-modal expansion, very low churn)
+
+**This is why "Hybrid Customer Percentage" is the key metric.**
+
+**The Bridge Features Serve Both:**
+
+**Services:**
+- VPN use: Employees access internal web apps
+- Platform use: Microservices discover each other
+- Same tech, different scale
+
+**Workload Identity:**
+- VPN use: Engineers get JIT access to production DBs
+- Platform use: CI/CD authenticates without secrets
+- Same identity model for humans and workloads
+
+**The Differentiation:** Not "VPN company" vs "Platform company" — **we bridge human and workload connectivity**.
+
+---
+
 ### Core Difference: Human-to-Resource vs Resource-to-Resource
 
 **VPN Customers** use Tailscale for **human-to-resource** connectivity:
