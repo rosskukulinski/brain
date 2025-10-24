@@ -197,9 +197,60 @@ At Kong, we had similar scaling challenges around ~8-10 teams. What worked:
 
 ## Feature Flagging & Progressive Rollout
 
-**Open Question:** Is Tailscale using feature flagging (e.g., LaunchDarkly, Flagsmith, or homegrown) to progressively roll out capabilities?
+**UPDATE (2025-10-24):** Tailscale has **BUILT their own feature flag system called "controlknobs"** - they do NOT use LaunchDarkly.
 
-**Why This Matters:**
+### Current State: Homegrown "Controlknobs" System
+
+**Architecture:**
+- Package: `control/controlknobs` in Tailscale codebase
+- Mechanism: Control plane pushes configuration to clients via MapResponse
+- Remote kill switches for experimental/risky features
+- 20+ configurable knobs for network, DNS, platform-specific features
+- No client updates needed to toggle features
+
+**Key Features:**
+- `DisableUPnP`, `KeepFullWGConfig`, `RandomizeClientPort` (network)
+- DNS forwarder controls, split DNS handling
+- Platform-specific: Linux netfilter selection, Windows NRPT, captive portal detection
+- Real-time updates from control plane to all clients
+
+**Design Goal:** "Make it possible to disable experimental/risky functionality from the control plane, derisking client releases, knowing we can roll things back to the old behavior if it turns out bad."
+
+### Buy vs Build Question
+
+**They chose BUILD. Why might this make sense?**
+
+**Pros of their homegrown approach:**
+1. **Tight integration with control plane** - Leverages existing MapResponse protocol
+2. **No external dependency** - Critical infrastructure stays internal
+3. **Purpose-built for client/server duality** - Addresses their specific runtime model
+4. **Lower latency** - No third-party API calls
+5. **Cost** - No $5-10K/month SaaS fees
+6. **Security** - Sensitive feature flags don't leave their infrastructure
+
+**Cons / Potential gaps:**
+1. **Limited to binary on/off** - May not support percentage rollouts easily
+2. **No built-in A/B testing** - LaunchDarkly has experimentation features
+3. **Less sophisticated targeting** - LaunchDarkly offers complex user segmentation
+4. **Maintenance burden** - Issue #14788 notes "too much boilerplate" when adding flags
+5. **No UI** - Likely requires code changes to add/modify flags
+6. **Limited observability** - No dashboard showing which flags are enabled where
+
+**When might "BUY" make sense?**
+
+Consider LaunchDarkly/Split/Statsig if:
+- Need percentage-based rollouts (10% → 50% → 100%)
+- Want A/B testing for pricing, UX experiments
+- Need non-technical stakeholders to control flags (PM, sales, support)
+- Want detailed analytics on flag usage and impact
+- Need feature flags for web app, not just backend/clients
+
+**Hybrid approach?**
+- Keep controlknobs for low-level client features (performance, network)
+- Add LaunchDarkly for higher-level product features (pricing, UI, experiments)
+- Controlknobs = infrastructure flags, LaunchDarkly = product flags
+
+### Why This Matters:
 
 Looking at the Q4 roadmap, there are multiple items at different stages (Alpha, Beta, GA, POC). Feature flags could be a powerful enabler for:
 
@@ -345,25 +396,31 @@ If teams have feature flags, they can:
 
 ### Questions for Interview:
 
-1. **Current State:**
-   - "Do you currently use feature flagging? Which tool/approach?"
-   - "How do you manage progressive rollouts for features in Alpha/Beta/GA?"
-   - "What's the process for rolling back a feature that causes issues?"
+1. **Current State (we now know they use controlknobs):**
+   - "I saw you have controlknobs for infrastructure flags. How well is that working?"
+   - "What's the process for adding new controlknobs? Is the boilerplate issue from #14788 still a pain point?"
+   - "How do you manage progressive rollouts? Controlknobs seem binary (on/off) - do you have percentage-based rollouts?"
+   - "Who can toggle controlknobs in production? Is it engineering-only or can PMs/support do it?"
 
 2. **SRPF Alignment:**
-   - "How do feature flags fit into the Security > Reliability > Performance > Features framework?"
-   - "When a feature threatens reliability, how quickly can you disable it?"
-   - "Have you had incidents where a kill switch would have helped?"
+   - "How have controlknobs helped with the Security > Reliability > Performance > Features framework?"
+   - "When a feature threatens reliability, how quickly can you disable it via controlknobs?"
+   - "Any examples where controlknobs saved you from a major incident?"
 
 3. **Engineering Velocity:**
-   - "Do client teams wait for full client adoption before enabling features?"
-   - "How do you handle the client/server deployment mismatch?"
-   - "Could feature flags help engineering experiment more freely while respecting SRPF?"
+   - "Do client teams wait for full client adoption before enabling features via controlknobs?"
+   - "How do controlknobs help with the client/server deployment mismatch?"
+   - "Are there feature types where controlknobs aren't sufficient? (A/B tests, UX experiments?)"
 
-4. **Organizational Impact:**
-   - "If teams had more control over feature rollout via flags, could we reduce planning coordination?"
-   - "Would feature flags enable smaller batch sizes and faster iteration?"
-   - "How would this affect the Problem doc → 1-pager → Project doc process?"
+4. **Buy vs Build Consideration:**
+   - "Have you considered adding a product-level feature flag tool (LaunchDarkly) for higher-level experiments?"
+   - "Controlknobs seem great for infra flags - would you want a separate system for product/pricing/UX flags?"
+   - "Any pain points with the homegrown approach? Where does it fall short?"
+
+5. **Organizational Impact:**
+   - "Do teams have autonomy to add/toggle their own controlknobs?"
+   - "Could expanded feature flagging enable smaller batch sizes and faster iteration?"
+   - "How would better feature flag observability (dashboard, analytics) help teams?"
 
 ### Potential Concerns & Tradeoffs:
 
@@ -389,17 +446,35 @@ If teams have feature flags, they can:
 
 ### Recommendation:
 
-**If not already using feature flags:**
-- Start small: Implement for 1-2 high-risk P0 items (Peer Relay, Workload Identity)
-- Tooling: LaunchDarkly or Flagsmith (proven, enterprise-ready)
-- Rollout strategy: Internal first, then beta opt-in, then gradual GA
-- Establish flag lifecycle: Auto-expire, cleanup process
+**They already have controlknobs (homegrown infrastructure flags). Next steps could be:**
 
-**If already using feature flags:**
-- Expand usage to enable more engineering experimentation
-- Use flags to reduce planning coordination overhead
-- Leverage for A/B testing on pricing and product decisions
-- Consider as enabler for "teams as APIs" organizational model
+**Short-term (improve existing):**
+1. Reduce controlknobs boilerplate (address #14788 pain points)
+2. Add controlknobs observability dashboard (which flags are on/off across fleet)
+3. Document controlknobs best practices for teams
+4. Expand team autonomy to add/toggle their own knobs
+
+**Medium-term (fill gaps):**
+1. **Add percentage-based rollouts** - Extend controlknobs or buy LaunchDarkly for:
+   - Gradual rollouts: 10% → 50% → 100%
+   - A/B testing for pricing experiments
+   - Cohort-based targeting (free vs paid, region, client version)
+
+2. **Consider hybrid approach:**
+   - Keep controlknobs for low-level infrastructure (performance, network, security)
+   - Add LaunchDarkly for product-level features (pricing, UX, experiments)
+   - Let PMs/support control product flags without engineering
+
+3. **Use flags to enable "teams as APIs" model:**
+   - Teams ship features behind flags (disabled by default)
+   - Other teams integrate when ready (enable flags for their use)
+   - Reduces cross-team coordination in quarterly planning
+
+**ROI Analysis:**
+- LaunchDarkly cost: ~$5-10K/month for their scale
+- Value: Faster iteration, A/B testing, PM autonomy, reduced coordination overhead
+- If saves 1 week of engineering time per quarter: $50K+ annual value
+- **Verdict: Likely worth it IF they need product-level experiments beyond infrastructure flags**
 
 ---
 
