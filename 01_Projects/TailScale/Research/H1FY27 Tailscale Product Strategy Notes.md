@@ -1,3 +1,13 @@
+---
+created: 2025-10-24
+source: VP Product Interview Materials
+author: Sam Linville
+published: 2025-08-08
+tags: [tailscale, product-strategy, roadmap, interview-materials]
+status: complete
+project: TailScale
+---
+
 # H2 FY26 / Early FY27 Product Strategy notes
 
 ## Draft [Sam Linville](mailto:sam@tailscale.com) Aug 8, 2025

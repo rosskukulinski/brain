@@ -1,3 +1,12 @@
+---
+created: 2025-10-24
+source: VP Product Interview Materials
+published: 2025-09
+tags: [tailscale, epd, newsletter, product, engineering, design, interview-materials]
+status: complete
+project: TailScale
+---
+
 # 📬 EPD Newsletter|Q3, September 2025 go/newsletters
 
 ---

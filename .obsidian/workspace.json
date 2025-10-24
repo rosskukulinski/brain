@@ -11,10 +11,14 @@
             "id": "2ec68211f1afb04f",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "01_Projects/TailScale/Research/Kong vs Tailscale Growth Analysis.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "New tab"
+              "title": "Kong vs Tailscale Growth Analysis"
             }
           }
         ]
@@ -74,7 +78,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 422.5
   },
   "right": {
     "id": "5062ca77e12398ed",
@@ -90,6 +94,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "01_Projects/TailScale/Research/Kong vs Tailscale Growth Analysis.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -99,7 +104,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks"
+              "title": "Backlinks for Kong vs Tailscale Growth Analysis"
             }
           },
           {
@@ -108,11 +113,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "01_Projects/TailScale/Research/Kong vs Tailscale Growth Analysis.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links"
+              "title": "Outgoing links from Kong vs Tailscale Growth Analysis"
             }
           },
           {
@@ -136,12 +142,13 @@
             "state": {
               "type": "outline",
               "state": {
+                "file": "01_Projects/TailScale/Research/Kong vs Tailscale Growth Analysis.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline"
+              "title": "Outline of Kong vs Tailscale Growth Analysis"
             }
           }
         ]
@@ -164,25 +171,42 @@
   },
   "active": "2ec68211f1afb04f",
   "lastOpenFiles": [
+    "01_Projects/TailScale/Research/GitHub Repository Analysis - 2025-10-24.md",
+    "01_Projects/TailScale/Research/Kong vs Tailscale Strategic Comparison.md",
+    "01_Projects/TailScale/Research/Reddit Community Analysis.md",
+    "01_Projects/TailScale/Research/Kong vs Tailscale Growth Analysis.md",
+    "05_Attachments/tailscale-kong-star-history.png",
+    "01_Projects/TailScale/Working Notes.md",
+    "01_Projects/TailScale/Research/Strategic Diagnosis - Draft.md",
+    "01_Projects/TailScale/Research/Strategic Guiding Policy Options.md",
+    "01_Projects/TailScale/Research/Complete Strategy - H1FY27.md",
+    "01_Projects/TailScale/Research/Competitive Analysis and Customer Research.md",
+    "01_Projects/TailScale/Research/H1FY27 Tailscale Product Strategy Notes.md",
+    "01_Projects/TailScale/Research/Good Strategy Bad Strategy - Framework Summary.md",
+    "01_Projects/TailScale/Research/Blog - Systems Design 2 What We Hope We Know - 2023-04-15.md",
+    "01_Projects/TailScale/Research/Blog - Not All Heroes Wear Capes - 2025-04-23.md",
+    "01_Projects/TailScale/Research/Blog - AI Changes People - 2025-04-15.md",
+    "01_Projects/TailScale/Research/Blog - Remembering The LAN - 2020-01-28.md",
+    "01_Projects/TailScale/Research/Blog - How Tailscale Free Plan Stays Free - 2022-03-16.md",
+    "01_Projects/TailScale/Research/Blog - Systems Design Explains The World Volume 1 - 2020-12-27.md",
+    "01_Projects/TailScale/Research/Blog - The World In Which IPv6 Was A Good Design - 2017-08-10.md",
     "01_Projects/TailScale/Research/Blog - The New Internet - 2024-07-26.md",
-    "00_Inbox/Ross Kukulinski _ VP Product Interview _  EPD Team Q4 FY26 Plan - Sheet1.csv",
+    "01_Projects/TailScale/Research/Blog - Tech Debt Metaphor Maximalism - 2023-06-05.md",
+    "01_Projects/TailScale/Research/September EPD Newsletter.md",
     "00_Inbox/Ross Kukulinski _ VP Product Interview _  H1FY27 Tailscale Product Strategy notes.md",
+    "01_Projects/TailScale/Research/EPD Team Q4 FY26 Plan.csv",
     "00_Inbox/Ross Kukulinski _ VP Product Interview _  September EPD Newsletter.md",
+    "00_Inbox/Ross Kukulinski _ VP Product Interview _  EPD Team Q4 FY26 Plan - Sheet1.csv",
     "05_Attachments/Organized",
     "00_Inbox/Clippings",
     "06_Metadata/Templates/Weekly Review Template.md",
     "02_Areas/Team Management/README.md",
     "02_Areas/Health & Fitness/README.md",
-    "02_Areas/Family/README.md",
-    "02_Areas/Career Development/README.md",
-    "01_Projects/TailScale/README.md",
     "02_Areas/Team Management",
     "02_Areas/Parents",
     "02_Areas/Noah",
     "02_Areas/Nicole",
     "02_Areas/Home Maintenance",
-    "02_Areas/Health & Fitness",
-    "02_Areas/Hannah",
-    "CLAUDE.md"
+    "02_Areas/Health & Fitness"
   ]
 }
