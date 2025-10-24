@@ -114,11 +114,25 @@ Questions:
 
 ## Questions to Explore
 
+### Strategy & Prioritization
 - How does Sam think about SRPF prioritization today?
 - What's the idea intake process currently? Is it working?
-- What's the client upgrade policy? How long do they support old versions?
 - What's the revenue mix between PLG/PLS/enterprise? Target mix?
 - How do sales comp plans align with product strategy?
+
+### Technical Architecture
+- What's the client upgrade policy? How long do they support old versions?
+- **Partner integration feasibility:** Are there architectural constraints that make vendor integrations (like Snowflake) harder than the analysis suggests?
+  - Can customer tailnets safely allow third-party provisioning?
+  - Security model implications of partners creating nodes in customer networks?
+  - Control plane scalability with massive partner-driven node creation?
+  - Key rotation and lifecycle management at scale?
+  - Multi-tenant Services architecture—is it ready for partner use cases?
+
+### Current State
+- What's Tailscale's current partnership strategy? Any existing vendor relationships?
+- Has anyone approached Tailscale about integration (databases, cloud providers, etc.)?
+- What lessons from existing OEM/partnership discussions?
 
 ---
 
@@ -156,202 +170,9 @@ Questions:
 
 ## Connections & Insights
 
--
-
----
-
-## Tech Partnership Strategy: Wedging Via Hyperscalers
-
-### The Paradox
-
-Avery's "New Internet" vision positions AWS as the rent-seeker that Tailscale helps users avoid. But what if hyperscalers could be partners, not adversaries?
-
-### Why Hyperscalers Might Embrace Tailscale
-
-**AWS/GCP/Azure:**
-1. **Hybrid/Multi-cloud is real** - Enterprises want workloads across clouds + on-prem
-   - Current solution: Complex VPN meshes, transit gateways, expensive interconnects
-   - Tailscale solution: Universal connectivity layer that makes "cloud" location-agnostic
-   - AWS value: Easier to integrate AWS services into customer environments = more AWS consumption
-
-2. **Edge computing needs better connectivity**
-   - Edge devices need to talk to cloud services securely
-   - Current: VPNs, IoT-specific protocols, custom solutions
-   - Tailscale solution: Uniform connectivity for edge → cloud
-   - Hyperscaler value: Reduces friction to adopt their edge offerings
-
-3. **Developer experience = competitive advantage**
-   - Easier connectivity → faster development → more cloud usage
-   - "Powered by Tailscale" could be a differentiator vs competitors
-   - Similar to how AWS embraced Docker/Kubernetes despite commoditizing compute
-
-4. **Managed Tailscale = new revenue stream**
-   - Offer Tailscale as a managed service (like AWS manages MongoDB, Elasticsearch)
-   - Hyperscaler captures operational revenue, Tailscale gets distribution
-   - Customer gets integrated billing, support, and SLAs
-
-**AI Vendors (OpenAI, Anthropic, Mistral, etc.):**
-1. **Model access from anywhere**
-   - Customers want to call APIs from private networks, edge devices, air-gapped environments
-   - Current: Complex proxy setups, VPN tunnels, security nightmares
-   - Tailscale solution: Secure connectivity to AI APIs without exposing to public internet
-
-2. **Fine-tuning and data privacy**
-   - Enterprises want to fine-tune models on private data
-   - Need secure channel to upload training data, download models
-   - Tailscale: End-to-end encrypted data transfer
-
-3. **AI at the edge**
-   - Running inference on edge devices that need to sync with cloud models
-   - Tailscale: Seamless edge ↔ cloud model synchronization
-
-**Database/Data Warehouse Vendors (Snowflake, Databricks, MongoDB, etc.):**
-1. **The connectivity pain is acute**
-   - Customers constantly struggle to connect to databases securely
-   - PrivateLink, VPN peering, IP whitelisting are all terrible UX
-   - Tailscale: "Just connect to your database via Tailscale IP"
-
-2. **Multi-cloud data strategy**
-   - Data in Snowflake, compute in AWS, analysts on corporate network
-   - Need secure connectivity across all environments
-   - Tailscale: Universal data plane
-
-3. **Compliance and audit**
-   - Database access logging is critical (SOC2, HIPAA, etc.)
-   - Tailscale's infra access features (audit logging, session recording) directly address this
-   - Partnership: "Snowflake + Tailscale = compliant data access out of the box"
-
-### Potential Partnership Models
-
-**Model 1: Integration Partnership**
-- Vendor integrates Tailscale into their product
-- Example: Snowflake offers "Connect via Tailscale" as an option in setup wizard
-- Value: Dramatically simpler onboarding for private connectivity
-- Precedent: How Heroku integrated with AWS, or how Vercel integrates with various clouds
-
-**Model 2: Marketplace/Co-sell**
-- Tailscale available in AWS/GCP/Azure marketplaces
-- Joint GTM motion: "Secure your multi-cloud with Tailscale"
-- Hyperscaler sales reps sell Tailscale as part of landing solution
-- Value: Distribution channel + credibility
-
-**Model 3: OEM/"Powered by Tailscale"**
-- Vendor white-labels Tailscale for their connectivity needs
-- Example: Databricks runs Tailscale under the hood for cluster connectivity
-- Customer never knows it's Tailscale (or does, as a feature)
-- Value: Tailscale becomes infrastructure-level adoption
-
-**Model 4: Managed Service**
-- AWS offers "Amazon Tailscale Service" (like they offer MongoDB Atlas, Redis, etc.)
-- Fully managed, integrated billing, AWS support
-- Tailscale gets revenue share + massive distribution
-- Value: Enterprise customers get "approved vendor" status instantly
-
-### Strategic Fit with Bridge Strategy
-
-This actually **reinforces** the bridge approach:
-
-**Services + Partnerships = Platform Distribution**
-- If Snowflake integrates Tailscale Services for database connectivity...
-- Every Snowflake customer gets exposed to Tailscale platform capabilities
-- Enterprise VPN becomes the natural expansion: "You're using it for data, why not for everything?"
-
-**Workload Identity + Cloud IAM**
-- Integrate Tailscale workload identity with AWS IAM, GCP service accounts
-- Make it trivial to give cloud workloads secure connectivity
-- Solves real pain point for platform teams
-
-**Multi-tenant architecture matters**
-- Hyperscaler customers often have complex org structures
-- Multiple tailnets, policy fragments, identity federation = table stakes
-- Bridge features enable partnership viability
-
-### Questions to Explore
-
-**Strategic:**
-- Does partnering with AWS contradict the "New Internet" vision? Or is it pragmatic go-to-market?
-- What's Tailscale's current partnership strategy? Any existing hyperscaler relationships?
-- Would hyperscalers see Tailscale as complementary or competitive?
-
-**Tactical:**
-- Which vendor has the most acute connectivity pain? (Database vendors seem obvious)
-- What's the integration complexity? Can it be lightweight?
-- Who's the buyer for a partnership? (Engineering? BD? Product?)
-
-**Execution:**
-- Does this require dedicated partnership/BD resources?
-- How does this fit into H1FY27 roadmap? Is it a distraction or accelerant?
-- What proof points do you need to pitch hyperscalers? (usage data, customer testimonials)
-
-### Potential Entry Wedges
-
-**Easiest (Low hanging fruit):**
-1. **Snowflake/Databricks** - Connectivity pain is extreme, limited workarounds exist
-2. **MongoDB Atlas** - Already cloud-hosted, PrivateLink complexity is known issue
-3. **AI inference providers** - Edge AI is emerging use case with no good solution
-
-**Medium difficulty:**
-1. **AWS/GCP marketplace** - Distribution play, not deep integration
-2. **Kubernetes vendors** (Rancher, D2iQ) - K8s connectivity is messy, Tailscale operator exists
-3. **CI/CD platforms** (GitHub Actions, GitLab) - Workload identity is natural fit
-
-**Hardest (but highest impact):**
-1. **AWS/GCP/Azure native integration** - "Connect to VPC via Tailscale" button in console
-2. **OEM for hyperscaler edge** - AWS IoT/Greengrass using Tailscale under hood
-3. **M&A** - Could a hyperscaler just acquire Tailscale? (probably not the plan, but worth considering)
-
-### Connection to "New Internet" Vision
-
-Avery's post says: *"The Internet is for everyone... To the people building the Internet, nothing mattered but getting everyone connected."*
-
-Hyperscaler partnerships could be the **fastest path to universal adoption**:
-- Piggyback on their distribution (millions of customers)
-- Reduce friction (integrated, blessed solution)
-- Network effects accelerate (more endpoints = more value)
-
-It's not selling out—it's using existing networks to build the new one.
-
-### Counter-Argument: Why This Might Not Work
-
-**Hyperscalers may resist:**
-- AWS makes money on interconnect, transit gateway, PrivateLink fees
-- Tailscale reduces that revenue (even if it increases other usage)
-- "Not invented here" culture at large cloud vendors
-
-**Integration complexity:**
-- Each vendor has different auth, networking, security model
-- Building/maintaining integrations is engineering tax
-- Could distract from core product development
-
-**Misaligned incentives:**
-- Hyperscaler wants lock-in, Tailscale enables portability
-- Hard to align on pricing, revenue share, GTM motion
-- Partnership BD cycles are SLOW (12-18 months typical)
-
-**Better alternatives?**
-- Focus on end customers instead of vendors
-- Let organic "bring to work" drive adoption
-- Partnerships are distraction from core bridge strategy
-
-### Recommendation for Discussion
-
-This feels like a **Q2-H2 FY27 opportunity**, not Q4-Q1:
-
-**First (H1):** Prove bridge thesis with direct customers
-- Show Services adoption, workload identity traction
-- Build reference architecture for database connectivity, AI access
-- Collect testimonials: "Tailscale solved our Snowflake access problem"
-
-**Then (H2):** Approach partnerships with proof points
-- "50 customers use us for Snowflake connectivity - let's make it native"
-- "1000 CI/CD workloads use workload identity - let's integrate with GitHub Actions"
-- Data makes the pitch credible
-
-**Why wait:**
-- Partnerships require dedicated resources (BD, eng for integrations)
-- Need leverage in negotiations (usage data, customer demand)
-- Bridge strategy must work standalone before partnerships amplify it
-
-But definitely worth putting in the "future opportunities" section of H1 strategy.
+- SRPF framework aligns well with "Reliability" focus in bridge strategy (control plane scalability, Packet Filter v2)
+- Runtime duality problem suggests client stability must come first → validates prioritizing tech debt
+- PLG/PLS tension resolved by bridge features that work for both developer-led and IT-approved buying
+- Partnership opportunities (see Future Opportunities.md) could amplify bridge strategy in H2/FY28
 
 ---
