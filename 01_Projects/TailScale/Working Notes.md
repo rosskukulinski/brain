@@ -741,6 +741,282 @@ These metrics specifically test whether the bridge features are working:
 
 ---
 
+## VPN Customers vs Platform Users: Key Distinctions
+
+### Core Difference: Human-to-Resource vs Resource-to-Resource
+
+**VPN Customers** use Tailscale for **human-to-resource** connectivity:
+- Alice's laptop → company database
+- Bob's phone → internal admin panel
+- IT team → Kubernetes cluster
+- Remote employee → office file share
+
+**Platform Users** use Tailscale for **resource-to-resource** connectivity:
+- CI pipeline → staging environment
+- Microservice A → Microservice B
+- IoT sensor → data ingestion service
+- Ephemeral test environment → production API
+
+---
+
+### Detailed Comparison
+
+| Dimension | VPN Customers | Platform Users |
+|-----------|---------------|----------------|
+| **Primary Use Case** | Business VPN, Infra Access | App Connectivity, Service Mesh, CI/CD |
+| **Buyer Persona** | IT/Security Leader | Developer, DevOps Engineer, Platform Team |
+| **Users** | Humans (employees, contractors) | Workloads (services, bots, machines) |
+| **Devices** | Laptops, phones, tablets | Servers, containers, CI runners, IoT devices |
+| **Connection Pattern** | Human initiates connection to resource | Automated, programmatic connections |
+| **Buying Motion** | Top-down (IT evaluates → org rollout) | Bottom-up (dev discovers → proves value → expands) |
+| **Success Metric** | Employees connected, support tickets reduced | API calls, deployment velocity, service uptime |
+| **Key Features Used** | ACLs, exit nodes, app connectors, SSO, device posture, DNS filtering | Services, workload identity, APIs, SDKs, ephemeral tailnets |
+| **Pricing Expectation** | Per-user seats or per-device | Usage-based or per-workload/service |
+| **Competitor Set** | Cisco AnyConnect, Palo Alto, Twingate, Zscaler, OpenVPN | Service mesh (Istio, Linkerd), Cloudflare Tunnels, HashiCorp Boundary, DIY WireGuard |
+| **RFP Questions** | "SOC2 compliant?" "SSO integration?" "Device posture?" | "API-first?" "Kubernetes native?" "Ephemeral environments?" |
+| **Expansion Path** | More employees → more devices → more locations | More services → more environments → more automation |
+| **Churn Risk** | IT mandate changes, competitor wins RFP | Developer moves to competitor platform, rebuilds on alternative |
+
+---
+
+### Sam's Framing from H1FY27 Strategy
+
+From the interview materials, Sam Linville distinguished:
+
+**"Core VPN":**
+> You're using Tailscale for a business VPN or infra access.
+
+**"App connectivity":**
+> You're using Tailscale to provide the connectivity layer between distributed services or infrastructure.
+
+App connectivity can look like:
+- Internal platform or CI/CD
+- End-user product
+- Internal tooling
+
+**Key quote:** "The internal tooling piece is a little bit muddy because the internal tool is likely deployed into the Core VPN for employees to access, but I think it's actually a great **bridge** to help people who bought us for the Core VPN think about Tailscale being useful for app connectivity."
+
+---
+
+### Why This Distinction Matters for Bridge Strategy
+
+**The Overlap is the Opportunity:**
+
+Most real-world customers need BOTH:
+
+**Example 1: Engineering Team at SaaS Company**
+- **VPN usage:** Engineers access production databases, Kubernetes dashboards, internal admin tools
+- **Platform usage:** CI/CD pipelines authenticate via workload identity, microservices communicate via Services, ephemeral preview environments for every PR
+- **Same customer, same infrastructure, different connectivity patterns**
+
+**Example 2: IoT Device Manufacturer**
+- **VPN usage:** Field technicians remotely access deployed IoT devices for diagnostics
+- **Platform usage:** IoT devices automatically connect to data ingestion pipeline, update servers, monitoring dashboards
+- **Same devices, dual-purpose usage**
+
+**Example 3: Enterprise with Internal Tools**
+- **VPN usage:** Employees access custom internal applications (HR portal, expense system, wikis)
+- **Platform usage:** Those internal applications are built as microservices using Tailscale Services for service-to-service communication
+- **Internal tools are the bridge between VPN and platform**
+
+---
+
+### The Bridge Features Serve Both
+
+This is why Services, workload identity, and multiple tailnets are strategic:
+
+**Services:**
+- **VPN use case:** Employees access internal web apps via Tailscale (replace VPN + reverse proxy)
+- **Platform use case:** Microservices discover and connect to each other (service mesh alternative)
+- **Bridge:** Same technology, different scale and consumer
+
+**Workload Identity:**
+- **VPN use case:** Engineers get just-in-time access to production databases with identity tied to their user account (replaces Teleport, StrongDM)
+- **Platform use case:** CI/CD jobs authenticate to deployment targets without long-lived secrets
+- **Bridge:** Same identity model for humans and workloads
+
+**Multiple Tailnets:**
+- **VPN use case:** IT segregates production from staging for compliance, or separates divisions for security
+- **Platform use case:** Developers spin up ephemeral tailnets per feature branch or per customer deployment
+- **Bridge:** Same multi-tenancy primitive, different instantiation patterns
+
+---
+
+### How to Identify Each Type in the Wild
+
+**VPN Customer Signals:**
+- >10 human users in tailnet
+- Using ACLs extensively (user groups, permissions)
+- Exit nodes or app connectors configured
+- SSO integration active
+- Support tickets about "can't connect from home" or "iOS app not working"
+- Bought through IT/Security contact
+- Discussions about compliance, audit logs, device posture
+
+**Platform User Signals:**
+- High percentage of non-human devices (>30% are servers/containers/CI runners)
+- Using Services API or workload identity
+- API call volume disproportionate to user count
+- Ephemeral tailnets created and destroyed regularly
+- GitHub/GitLab integration
+- Support tickets about "API rate limits" or "SDK documentation"
+- Bought through engineering/DevOps contact
+- Discussions about SDKs, programmatic control, Kubernetes operators
+
+**Hybrid Customer Signals (The Bridge!):**
+- Both human users AND workload devices
+- Using ACLs AND Services
+- SSO integration AND workload identity
+- Traditional VPN use cases AND CI/CD pipelines
+- Support tickets span IT concerns and developer questions
+- Multiple buyer personas engaged (IT + Engineering leadership)
+- Discussions reference both "employee access" and "service mesh"
+
+---
+
+### Revenue and Retention Implications
+
+**VPN-Only Customers:**
+- **Revenue ceiling:** Limited by employee headcount
+- **Expansion:** Grows with hiring, new offices, M&A
+- **Retention:** Vulnerable to enterprise sales cycles, competitor RFPs
+- **NRR:** 100-110% (grows with company headcount)
+- **Churn risk:** IT mandate change, budget cuts, competitive displacement
+
+**Platform-Only Customers:**
+- **Revenue ceiling:** Limited by number of services/workloads (can be higher than headcount)
+- **Expansion:** Grows with product complexity, microservices proliferation, more environments
+- **Retention:** Sticky if embedded in deployment pipeline, but can rebuild on alternatives
+- **NRR:** 110-130% (grows with service count and usage)
+- **Churn risk:** Developer moves to different platform, refactors to alternative
+
+**Hybrid Customers (Bridge Thesis):**
+- **Revenue ceiling:** Headcount + workload count (much higher)
+- **Expansion:** Multi-modal (more employees + more services + more environments)
+- **Retention:** Very high (switching costs across IT and Engineering)
+- **NRR:** 130-150%+ (expansion in both dimensions)
+- **Churn risk:** Very low (requires both IT and Engineering to agree to switch)
+- **Lock-in:** Network effects (more devices = more value), embedded in both employee workflow and deployment pipeline
+
+**This is why Hybrid Customer Percentage is the key bridge metric.**
+
+---
+
+### Personas: Decision Makers and Users
+
+**VPN Customer Personas:**
+
+*Decision Maker:* **IT Director / Security Lead**
+- Cares about: Compliance, support burden, SSO, audit logs, device management
+- Evaluates against: Cisco, Palo Alto, Zscaler, Twingate
+- Success metric: User satisfaction, support ticket reduction, security posture
+- Budget: IT/Security budget (OpEx)
+
+*End User:* **Remote Employee**
+- Cares about: "Does it just work?" Connection speed, battery life, doesn't break Zoom
+- Doesn't care about: How it works, security details
+- Success metric: Can access work resources from anywhere without thinking about it
+
+**Platform User Personas:**
+
+*Decision Maker:* **VP Engineering / Head of DevOps**
+- Cares about: Developer velocity, deployment reliability, API quality, Kubernetes integration
+- Evaluates against: Service mesh options, Cloudflare, DIY WireGuard, HashiCorp
+- Success metric: Deployment frequency, MTTR, developer satisfaction
+- Budget: Engineering/R&D budget (potentially CapEx if infrastructure)
+
+*End User:* **Platform Engineer / SRE**
+- Cares about: APIs, SDKs, documentation, observability, programmatic control
+- Doesn't care about: GUIs, end-user experience, SSO for humans
+- Success metric: Uptime, API latency, ease of integration
+
+**Bridge Personas (Both):**
+
+*Decision Maker:* **CTO / VP Infrastructure**
+- Cares about: Unified solution for both employee access and platform connectivity
+- Evaluates holistically: Cost of multiple vendors vs single platform
+- Success metric: Total infrastructure cost, developer productivity, security posture
+- Budget: Owns both IT and Engineering budgets
+
+*End User:* **Full-Stack Engineer**
+- Needs VPN: To access production for debugging
+- Needs Platform: To deploy services, run CI/CD, connect microservices
+- Cares about: One tool that works for both use cases
+- Success metric: "Can I do my job without juggling multiple tools?"
+
+---
+
+### GTM and Messaging Implications
+
+**VPN Customer Messaging:**
+- **Headline:** "The VPN that engineers don't hate"
+- **Pitch:** Replace Cisco/Palo Alto with modern, fast, zero-trust VPN
+- **Proof points:** Instacart saved 20 min/day per engineer, Corelight eliminated VPN support tickets
+- **Call to action:** "See why IT and employees both love Tailscale"
+- **Demo:** Show employee connecting from coffee shop, IT admin setting ACLs
+- **Sales play:** IT-led evaluation, prove user experience, win on simplicity
+
+**Platform User Messaging:**
+- **Headline:** "Build your internal platform on Tailscale"
+- **Pitch:** Secure service-to-service connectivity without the complexity of service mesh
+- **Proof points:** Customers use Tailscale Services for microservices, CI/CD with workload identity
+- **Call to action:** "Ship faster with Tailscale's connectivity platform"
+- **Demo:** Show deploying Service, workload identity for CI/CD, ephemeral tailnet per PR
+- **Sales play:** Developer discovers on Reddit/HN, builds POC, expands to team, IT approves
+
+**Hybrid/Bridge Messaging:**
+- **Headline:** "One network for your entire company and platform"
+- **Pitch:** Employees AND services on the same secure, private network
+- **Proof points:** Customers who started with VPN expanded to platform (or vice versa)
+- **Call to action:** "Start with VPN, expand to platform. Or vice versa."
+- **Demo:** Show BOTH employee access and CI/CD pipeline in same tailnet
+- **Sales play:** Enter through either door (VPN or platform), expand to the other
+
+---
+
+### Open Questions for Interview
+
+**Understanding Current State:**
+1. "What percentage of your customers are VPN-only, platform-only, or hybrid?"
+2. "Do you track this distinction? How do you segment customers?"
+3. "What's the typical expansion path? VPN→platform or platform→VPN?"
+
+**Product Implications:**
+4. "Do VPN and platform customers have different feature requests?"
+5. "Are there features that ONLY serve one segment? Should we cut those?"
+6. "How do you prioritize when VPN and platform needs conflict?"
+
+**Go-to-Market:**
+7. "Does your sales team pitch differently to IT vs Engineering buyers?"
+8. "Do you have separate landing pages or campaigns for VPN vs platform?"
+9. "What's the deal size difference between VPN-only and hybrid customers?"
+
+**Metrics & Success:**
+10. "Do hybrid customers have higher NRR than single-use customers?"
+11. "What's the conversion rate from VPN-only to hybrid? Platform-only to hybrid?"
+12. "If we only had to pick one segment to win, which would it be and why?"
+
+---
+
+### Recommendation: Embrace the Duality
+
+**Don't Force a Choice:**
+The bridge strategy recognizes that Tailscale is BOTH a VPN and a platform. Trying to pick one:
+- VPN-only: Leaves platform opportunity to competitors, commoditizes offering
+- Platform-only: Too early, market not mature, revenue gap too large
+
+**Instead:**
+- **Pursue hybrid customers aggressively** (highest LTV, lowest churn)
+- **Track and measure the overlap** (Hybrid Customer % metric)
+- **Build features that serve both** (Services, workload identity, multiple tailnets)
+- **Cut features that only serve one** (unless critical for table stakes)
+- **Message for both personas** (but emphasize hybrid value prop)
+
+**The Bridge Strategy is the Answer:**
+Not "VPN company" vs "Platform company" — we're the company that **bridges human and workload connectivity**. That's the differentiation.
+
+---
+
 ## Questions to Explore
 
 ### Strategy & Prioritization
