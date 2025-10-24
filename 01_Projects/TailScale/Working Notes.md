@@ -112,6 +112,89 @@ Questions:
 
 ---
 
+## R&D Planning Overhead
+
+**Observation from Q4 FY26 Plan CSV:**
+Looking at the planning artifact (58 items, 10 teams, multiple PMs, extensive documentation requirements), there seems to be significant overhead in the quarterly planning process.
+
+**Questions:**
+
+1. **Planning Time & Work Investment**
+   - How many person-weeks go into each quarterly planning cycle?
+   - What's the ratio of planning time to execution time?
+   - Are we spending 2-3 weeks every quarter on planning exercises?
+   - Is this the right rhythm? Would semi-annual or rolling planning work better?
+
+2. **Cross-Team Coordination Burden**
+   - Looking at the CSV: 10 teams, 5 PMs, complex interdependencies
+   - How much time is spent on cross-team alignment and dependencies?
+   - Examples from the plan:
+     - Services features span Networking, DevEx, Billing, GM teams
+     - Identity work touches Enterprise, Platform, DevEx teams
+     - Kubernetes work depends on Networking (Services integration)
+   - Are we creating unnecessary coupling through the planning process itself?
+
+3. **Teams as APIs: Looser Coupling**
+   - **Current model (implied):** Teams need extensive coordination, shared planning artifacts, cross-functional alignment
+   - **Proposed model:** Teams operate more like APIs with clear interfaces
+     - Well-defined contracts between teams
+     - Minimal synchronous coordination
+     - Each team ships independently within their domain
+     - Integration happens via stable interfaces, not planning meetings
+
+   **Questions:**
+   - What would it take to move to an API-style team model?
+   - Which teams could operate more independently today?
+   - What interfaces/contracts need to be defined?
+   - Is the platform architecture mature enough to support this?
+
+4. **Executive Buy-In Overhead**
+   - CSV shows multiple approval stages: Problem doc → 1-pager → Project doc → Commit status
+   - Analysis shows low completion rates (Kabir: 14-21%, Samuel: 0%)
+   - Are we requiring too many checkpoints?
+   - Questions:
+     - Who needs to approve each stage?
+     - How many departments must sign off on committed items?
+     - Is this gatekeeping adding value or just friction?
+     - Could we push decision-making authority down to teams?
+
+**Potential Problems:**
+
+1. **Planning theater:** Lots of docs and meetings that don't actually improve outcomes
+2. **Decision paralysis:** Too many stakeholders = slow decisions
+3. **Lost velocity:** Engineering time spent in planning/alignment instead of building
+4. **Innovation tax:** Novel ideas get squeezed out by process overhead
+5. **PM burnout:** Kabir managing 14 items with 14% doc completion = unsustainable
+
+**Hypothesis to Test:**
+
+> Large-scale quarterly planning worked when Tailscale was smaller (2-3 teams). Now at 10+ teams, the coordination costs exceed the benefits. We should move toward:
+> - **Continuous planning** (rolling 6-week cycles, not quarterly big-bang)
+> - **Team autonomy** (clear interfaces, minimal cross-team dependencies)
+> - **Reduced checkpoints** (fewer approval stages, faster iteration)
+> - **Smaller blast radius** (teams ship independently, integration is continuous)
+
+**Comparison to Kong:**
+At Kong, we had similar scaling challenges around ~8-10 teams. What worked:
+- Platform teams published APIs/contracts (not just code)
+- Product teams built on those contracts without asking permission
+- Quarterly planning was high-level themes, not 58-item spreadsheets
+- Teams shipped weekly/biweekly, not waiting for quarter boundaries
+
+**Questions for Interview:**
+
+1. "I noticed the Q4 plan has 58 items across 10 teams with extensive documentation requirements. How much time does the organization spend on quarterly planning?"
+
+2. "Have you considered treating teams more like APIs with looser coupling? What would that look like here?"
+
+3. "Looking at the low documentation completion rates (some PMs at 14-21%), is the planning process helping or hindering execution?"
+
+4. "What's the decision-making authority level for each team? Can teams commit to work without extensive cross-functional buy-in?"
+
+5. "At Kong, we found quarterly planning became a bottleneck around 8-10 teams. Have you seen that pattern here?"
+
+---
+
 ## Questions to Explore
 
 ### Strategy & Prioritization
