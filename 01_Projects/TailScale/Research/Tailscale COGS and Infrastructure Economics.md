@@ -205,15 +205,15 @@ User A ←→ User B (direct encrypted connection)
 
 ### Unit Economics Analysis
 
-**Cost Per User (Estimated):**
-- **Free tier users:** Minimal ($0.10-$1/user/year for coordination service)
-- **Paid users:** Higher (support during onboarding, premium features)
-- **Enterprise users:** Highest initially (sales + implementation support), then low
+**Cost Per Device (Estimated):**
+- **Free tier devices:** Minimal ($0.10-$1/device/year for coordination service)
+- **Paid tier devices:** Higher (support during onboarding, premium features)
+- **Enterprise devices:** Highest initially (sales + implementation support), then low
 
 **Marginal Cost to Serve:**
 - **Near zero** for additional bandwidth usage
-- **Fixed** for coordination service (scales slowly)
-- **Support-driven** (one-time onboarding, not ongoing)
+- **Fixed per device** for coordination service (scales slowly)
+- **Support-driven** (one-time onboarding per customer, not per device)
 
 **Comparison to Competitors:**
 
@@ -227,10 +227,16 @@ User A ←→ User B (direct encrypted connection)
 ### "100x Scale" Claim Analysis
 
 **What This Means:**
-- Current state: ~10,000+ paid customers (as of 2024)
-- 100x scale: Could support 1M+ paid customers
+- Current state: ~10,000+ paid customers with hundreds of thousands of devices (as of 2024)
+- 100x scale: Could support 1M+ customers / tens of millions of devices
 - Cost increase: Likely <10x (sub-linear scaling)
 - Implication: **Gross margins improve significantly with scale**
+
+**Why Device-Based Pricing Matters:**
+- Coordination service cost scales with devices, not users
+- Large customers might have 10-100 devices per employee (workstations, servers, IoT, infrastructure)
+- User-based pricing misses infrastructure use cases (service accounts, bots, CI/CD runners)
+- Device-based aligns revenue with actual cost drivers
 
 **Traditional SaaS:**
 - COGS often 20-30% of revenue
@@ -265,18 +271,32 @@ User A ←→ User B (direct encrypted connection)
 - Goes against architectural advantage
 - Would discourage heavy usage (which costs nothing)
 - Competitors can't compete on bandwidth pricing anyway
-- Users don't think in GB, they think in "devices" and "teams"
+- Customers don't think in GB, they think in "devices" and "access"
 
-**Current Pricing Model (Correct):**
-- Free: 1 user, 100 devices, 3 personal users
+**Current Pricing Model:**
+- Free: 1 user, 100 devices, or 3 personal users
 - Starter: $6/user/month (Personal Pro features)
 - Enterprise: Custom pricing (security, compliance, support)
 
+**Optimal Pricing Model: Device-Based**
+
+**Why Device-Based > User-Based:**
+1. **Maps to actual costs:** Coordination service scales with devices, not users
+2. **Clearer value proposition:** "Connect all your devices" vs "per user seat"
+3. **Better enterprise fit:** Service accounts, IoT devices, infrastructure don't have "users"
+4. **Aligns with free tier:** Already offers "100 devices" as the core metric
+5. **Avoids ambiguity:** Who is a "user"? (Contractor? Bot? Shared account?)
+
+**Device-Based Model:**
+- Small: X devices (solo developer, hobbyist)
+- Team: Y devices (small teams, startups)
+- Enterprise: Custom device count + features (SSO, ACLs, audit logs, support SLA)
+
 **Pricing Based On:**
-- Number of users (scales with team size)
-- Enterprise features (SSO, ACLs, audit logs)
-- Support tier (SLA commitments)
-- NOT usage or bandwidth
+- Number of devices (directly correlates with coordination service load)
+- Enterprise features (SSO, ACLs, audit logs, compliance)
+- Support tier (SLA commitments, priority access)
+- NOT usage, bandwidth, or ambiguous "users"
 
 ### 3. Investment Priorities Based on COGS
 
@@ -500,9 +520,10 @@ User A ←→ User B (direct encrypted connection)
    - Could signal peer-to-peer connectivity degradation
    - Would increase bandwidth costs (currently negligible)
 
-4. **Pricing model validation**
-   - Current model (per-user, not usage-based) is correct
-   - Could experiment with higher tiers for larger organizations
+4. **Pricing model evolution**
+   - Move from user-based to device-based pricing
+   - Aligns with cost structure (coordination service scales with devices)
+   - Better enterprise fit (infrastructure, IoT, service accounts)
    - Avoid bandwidth-based pricing (kills your architectural advantage)
 
 ---
