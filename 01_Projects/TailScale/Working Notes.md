@@ -1119,6 +1119,391 @@ Not "VPN company" vs "Platform company" — we're the company that **bridges hum
 
 ---
 
+## Strategic Gaps: What's Still Missing?
+
+### What You've Covered (Comprehensive)
+
+✅ **Strategy & Prioritization**
+- Bridge strategy (VPN + Platform overlap)
+- SRPF framework (Security > Reliability > Performance > Features)
+- Good Strategy Bad Strategy framework applied
+- Runtime duality problem (client vs cloud)
+
+✅ **Economics & Business Model**
+- COGS breakdown (support 50-60%, coordination 20-30%, DERP 10-20%)
+- Unit economics and scalability ("100x scale" claim)
+- Pricing model (device-based > user-based)
+- Free tier sustainability
+
+✅ **Market Intelligence**
+- Competitive landscape (ZeroTier, Twingate, traditional VPNs)
+- Customer migration patterns (Corelight, Instacart case studies)
+- Community analysis (Reddit, GitHub issues)
+- Growth comparison (Kong parallel, GitHub stars)
+
+✅ **Customers & Segments**
+- VPN vs Platform distinction (human-to-resource vs resource-to-resource)
+- Hybrid customers as key metric
+- PLG/PLS/Enterprise buying motions
+
+✅ **Metrics & KPIs**
+- North star metric (Active Device-Hours)
+- Bridge validation metrics (Hybrid Customer %, Services Adoption)
+- COGS efficiency metrics
+
+✅ **Execution & Process**
+- R&D planning overhead analysis
+- Feature flagging (controlknobs) for velocity
+- Teams as APIs concept
+
+✅ **GTM Opportunities**
+- Y Combinator Deals partnership proposal
+
+---
+
+### Critical Gaps to Address
+
+#### 1. **Pricing & Packaging Strategy** 🔴 HIGH PRIORITY
+
+**What's Missing:**
+- Specific pricing tiers and thresholds (what's the price per device?)
+- How to price hybrid customers (VPN + platform bundle discount?)
+- Free → Paid conversion mechanics
+- Enterprise custom pricing: When? How much?
+- Services pricing separate from VPN pricing?
+
+**Questions to Ask:**
+- "What's the current pricing model? Per-device, per-user, tiered?"
+- "Do hybrid customers pay more or is it bundled?"
+- "What's the free-to-paid conversion rate? How do we optimize it?"
+- "Should Services have separate pricing or bundle with VPN?"
+- "Where are we losing deals on price? Too high or too low?"
+
+**Why It Matters:**
+- Pricing IS product strategy (shapes customer behavior)
+- Device-based pricing is good, but what are the tier breakpoints?
+- Hybrid customers should pay premium, but how much?
+- Services might need usage-based pricing (different from VPN)
+
+---
+
+#### 2. **Channel Strategy & Partnerships** 🔴 HIGH PRIORITY
+
+**What's Missing:**
+- Cloud marketplace strategy (AWS, Azure, GCP Marketplaces)
+- MSP/reseller channel (should we have one?)
+- Technology partnerships (databases, observability tools, cloud providers)
+- OEM/embedded deals beyond what's in roadmap
+
+**Questions to Ask:**
+- "Are we on AWS/Azure/GCP Marketplaces? If not, why not?"
+- "Do we have channel partners or is it 100% direct?"
+- "What's the Snowflake/Databricks/MongoDB integration strategy?"
+- "Should we pursue reseller relationships or stay direct?"
+
+**Why It Matters:**
+- Enterprise customers buy through cloud marketplaces (committed spend)
+- Channel can scale reach without scaling sales team
+- Tech partnerships enable platform ecosystem
+- YC Deals is good, but what about AWS Activate, Azure for Startups?
+
+**Kong Experience:**
+- We had significant AWS Marketplace revenue
+- Channel partners helped with international expansion
+- Technology partnerships (Kong + AWS API Gateway) created bundling
+
+---
+
+#### 3. **Customer Success & Support Scalability** 🟡 MEDIUM PRIORITY
+
+**What's Missing:**
+- Support is 50-60% of COGS, but what's the strategy to reduce it?
+- Self-service vs high-touch customer success models
+- Community-led support (Reddit is doing heavy lifting)
+- Proactive success motions for expansion (VPN → hybrid)
+
+**Questions to Ask:**
+- "What's the support model? Tiered? All-access?"
+- "Do we have customer success managers for enterprise? At what ARR threshold?"
+- "How do we identify and prevent churn before it happens?"
+- "What's the plan to reduce support tickets per new tailnet?"
+
+**Why It Matters:**
+- Largest COGS component needs active optimization
+- High-touch CS for hybrid customers could drive 130-150% NRR
+- Proactive outreach: "You're using VPN, have you seen Services?"
+
+---
+
+#### 4. **Sales Capacity & Go-to-Market Coverage** 🟡 MEDIUM PRIORITY
+
+**What's Missing:**
+- Sales team size and structure
+- Inbound vs outbound split
+- Territory coverage (geographic, vertical)
+- Sales engineering capacity
+- ABM (account-based marketing) for enterprise
+
+**Questions to Ask:**
+- "How many sales reps do we have? What's the rep-to-revenue ratio?"
+- "Are we primarily inbound-led or do we have outbound SDRs?"
+- "What verticals are we targeting? Any industry-specific plays?"
+- "Do we have dedicated sales engineers? Ratio to AEs?"
+- "What's the plan to scale sales alongside product-led growth?"
+
+**Why It Matters:**
+- PLG gets you to $10M ARR, but enterprise sales needed beyond
+- Bridge strategy requires selling to both IT and Engineering buyers
+- Sales capacity determines how fast you can grow enterprise
+
+---
+
+#### 5. **International Expansion & Localization** 🟡 MEDIUM PRIORITY
+
+**What's Missing:**
+- Geographic expansion beyond NA/EU
+- Data residency requirements (GDPR, regional clouds)
+- Localization (language, currency, compliance)
+- APAC, LATAM go-to-market
+
+**Questions to Ask:**
+- "What percentage of revenue is international?"
+- "What's the expansion plan? APAC? LATAM?"
+- "Do we need regional DERP networks or control planes?"
+- "How do we handle data residency requirements?"
+
+**Why It Matters:**
+- Enterprise customers increasingly require data residency
+- APAC market is huge (and Kong saw success there)
+- Tailscale's tech (peer-to-peer) works globally, but go-to-market?
+
+---
+
+#### 6. **Competitive Defense & Moat** 🔴 HIGH PRIORITY
+
+**What's Missing:**
+- What if Cloudflare pivots to bridge strategy?
+- How to defend if Zscaler copies Services?
+- What's the long-term moat beyond first-mover?
+- Switching costs beyond technical lock-in
+
+**Questions to Ask:**
+- "What do you see as the sustainable competitive moat?"
+- "If Cloudflare launched 'Cloudflare Connect' tomorrow (VPN + platform), how do we respond?"
+- "Are we building network effects? Or is this primarily a better product play?"
+- "What prevents a customer from switching to ZeroTier + Twingate combo?"
+
+**Why It Matters:**
+- GitHub stars and PLG are great, but not defensible long-term
+- Cloudflare has global network + developer mindshare
+- Need durable moat: data gravity, ecosystem, switching costs
+
+**Potential Moat Elements:**
+- **Ecosystem:** Third-party Services, integrations, community projects
+- **Data gravity:** ACL policies, node configurations, historical network data
+- **Operational burden to switch:** Reconfiguring every device, rewriting ACLs
+- **Platform effects:** More users = better peer-to-peer (network effects)
+
+---
+
+#### 7. **Product Roadmap Trade-offs & Sequencing** 🟡 MEDIUM PRIORITY
+
+**What's Missing:**
+- Beyond Q4 FY26, what's the priority sequence for H1/H2 FY27?
+- Which bridge features to ship first? (Services, workload identity, multiple tailnets)
+- Dependencies between features
+- When to pay down tech debt vs ship features
+
+**Questions to Ask:**
+- "If you could only ship 3 features in H1 FY27, which and why?"
+- "What's blocking Services GA? Technical or GTM?"
+- "Is Packet Filter V2 truly a prerequisite for scaling, or can we defer it?"
+- "How do we decide when to stop iterating and ship?"
+
+**Why It Matters:**
+- Bridge strategy is clear, but execution sequence is not
+- Some features may have dependencies (e.g., Services needs identity)
+- Tech debt can't be deferred forever (Packet Filter V2 is P0)
+
+---
+
+#### 8. **Enterprise Blockers & Deal Loss Analysis** 🔴 HIGH PRIORITY
+
+**What's Missing:**
+- What deals are we losing and why?
+- Common enterprise objections (procurement, security, compliance)
+- RFP process: Are we on shortlists?
+- How to handle "security theater" feature requests (DNS filtering, DLP)
+
+**Questions to Ask:**
+- "What percentage of enterprise deals do we lose? To whom?"
+- "What's the most common reason we lose deals?"
+- "Do we participate in RFPs? What's our win rate?"
+- "How do we handle requests for features we philosophically oppose (DLP, packet inspection)?"
+- "Are there table-stakes features we're missing that block deals?"
+
+**Why It Matters:**
+- Knowing why you lose is as important as knowing why you win
+- "Security theater" features might be necessary evil for some segments
+- Can inform build vs partner decisions (e.g., partner with DNS filtering vendor)
+
+---
+
+#### 9. **Compliance & Certifications Roadmap** 🟡 MEDIUM PRIORITY
+
+**What's Missing:**
+- SOC2, ISO 27001, GDPR, HIPAA status
+- What's required vs nice-to-have
+- Timeline for compliance certifications
+- How compliance affects roadmap
+
+**Questions to Ask:**
+- "What certifications do we have? What's in progress?"
+- "How often do we lose deals due to missing certifications?"
+- "Is HIPAA required for healthcare customers? FedRAMP for gov?"
+- "Does compliance slow down feature development?"
+
+**Why It Matters:**
+- Enterprise buyers checklist includes certifications
+- Some industries (healthcare, finance, gov) require specific certs
+- Compliance can be table stakes, not differentiator
+
+---
+
+#### 10. **Organizational Structure & Team Dynamics** 🟡 MEDIUM PRIORITY
+
+**What's Missing:**
+- How are 10 teams organized? Reporting structure?
+- Engineering-to-product ratio
+- PM coverage model (how many PMs per team?)
+- Cross-functional collaboration patterns
+
+**Questions to Ask:**
+- "How is the product org structured? Platform vs VPN teams?"
+- "What's the eng:product ratio? Is that healthy?"
+- "Do we have product managers embedded in each team?"
+- "How do you avoid silos between VPN and Platform teams?"
+- "What's your role in this structure as VP Product?"
+
+**Why It Matters:**
+- Org structure should support bridge strategy (not reinforce silos)
+- If VPN and Platform teams are separate, who owns hybrid customers?
+- Your role definition depends on current structure
+
+---
+
+#### 11. **Developer Relations & Community Strategy** 🟡 MEDIUM PRIORITY
+
+**What's Missing:**
+- DevRel team size and charter
+- Conference strategy, sponsorships
+- Open source contributions, community engagement
+- Documentation quality and comprehensiveness
+
+**Questions to Ask:**
+- "Do we have a DevRel team? How many people?"
+- "What conferences do we sponsor/speak at?"
+- "How do we engage with the community beyond Reddit?"
+- "What's the content strategy? (Blog, tutorials, case studies)"
+
+**Why It Matters:**
+- PLG depends on developer love
+- Community is innovation engine (as you noted in analysis)
+- DevRel ROI is hard to measure but critical for platform strategy
+
+---
+
+#### 12. **Financial Targets & Burn Rate** 🟡 MEDIUM PRIORITY
+
+**What's Missing:**
+- ARR targets for H1 FY27? FY27 overall?
+- Burn rate and runway
+- Path to profitability
+- Investor expectations post-Series C
+
+**Questions to Ask:**
+- "What's the ARR target for end of FY27?"
+- "Are we profitable? If not, when?"
+- "What's the board's expectation for growth rate?"
+- "How does product strategy map to revenue goals?"
+
+**Why It Matters:**
+- Growth at all costs vs profitable growth
+- Affects build vs buy decisions
+- Shapes prioritization (revenue-driving vs strategic bets)
+
+---
+
+#### 13. **Platform Ecosystem & Third-Party Integrations** 🟡 MEDIUM PRIORITY
+
+**What's Missing:**
+- Third-party integration strategy
+- Should there be a Tailscale app marketplace?
+- Partner-built tools and services
+- API partner program
+
+**Questions to Ask:**
+- "What's the vision for third-party integrations?"
+- "Should partners be able to build on top of Tailscale?"
+- "Do we have an integration marketplace? Should we?"
+- "What's the API partner strategy?"
+
+**Why It Matters:**
+- Platform strategy requires ecosystem
+- Third-party integrations reduce your build burden
+- Marketplace can be revenue driver (take %)
+
+---
+
+### Prioritized Action Plan for Interview Prep
+
+**Before Interview (Research):**
+
+1. **Pricing deep-dive** - Find current pricing page, understand tiers
+2. **Deal loss analysis** - Ask recruiter/contact if you can see win/loss data
+3. **Org chart** - Understand reporting structure and team organization
+4. **Cloud marketplace presence** - Check AWS, Azure, GCP marketplaces
+
+**During Interview (Strategic Questions):**
+
+**Tier 1 (Must Ask):**
+1. Pricing & packaging strategy (device tiers, hybrid pricing)
+2. Competitive moat (what happens if Cloudflare copies us?)
+3. Enterprise blockers (why do we lose deals?)
+4. Channel strategy (cloud marketplaces, partnerships)
+
+**Tier 2 (Should Ask):**
+5. Customer success model (how to scale support, drive expansion)
+6. Sales capacity (team size, inbound/outbound split)
+7. Product roadmap sequencing (H1 FY27 priorities)
+8. Org structure (how teams are organized around bridge strategy)
+
+**Tier 3 (Nice to Have):**
+9. International expansion plans
+10. Compliance roadmap
+11. DevRel strategy
+12. Platform ecosystem vision
+
+---
+
+### Summary: The Big Picture View
+
+You've done excellent work on:
+- **Product strategy** (bridge, SRPF, metrics)
+- **Market analysis** (competition, customers, community)
+- **Business model** (COGS, unit economics)
+- **Execution challenges** (planning overhead, feature flags)
+
+**What's still needed:**
+- **Go-to-Market execution** (pricing, channels, sales)
+- **Competitive defense** (moat, response to copycats)
+- **Operational details** (org structure, support model)
+- **Growth levers** (partnerships, international, enterprise process)
+
+**The VP Product role likely owns or influences all of these.** You should be prepared to discuss both strategic vision (which you have) and tactical execution (which needs more depth).
+
+---
+
 ## Connections & Insights
 
 - SRPF framework aligns well with "Reliability" focus in bridge strategy (control plane scalability, Packet Filter v2)
