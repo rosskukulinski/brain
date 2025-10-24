@@ -540,5 +540,6 @@ If teams have feature flags, they can:
 - Runtime duality problem suggests client stability must come first → validates prioritizing tech debt
 - PLG/PLS tension resolved by bridge features that work for both developer-led and IT-approved buying
 - Partnership opportunities (see Future Opportunities.md) could amplify bridge strategy in H2/FY28
+- **Community as innovation engine:** The community builds v0 (proof of concept), validates demand, then Tailscale productizes v1 (production-ready). This de-risks product development—you don't have to guess what to build, the community is showing you. (See Community Projects Bridge Strategy Analysis.md)
 
 ---
